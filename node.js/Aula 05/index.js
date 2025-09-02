@@ -1,40 +1,45 @@
-const express = require("express");
+import express from "express";
+import bodyParser from "body-parser";
+import connection from "./database/database.js";
+import Pergunta from "./database/Pergunta.js";
+
 const app = express();
-const bodyParser = require("body-parser");
-const connection = require("./database/database.js");
 
-//Database
+// Conexão com o banco
 connection
-    .authenticate()
-    .then(() => {
-        console.log("Conexão feita com o banco de dados!")
-    })
-    .catch((msgErro) => {
-        console.log(msgErro);
-    })
+  .authenticate()
+  .then(() => {
+    console.log("Conexão feita com o banco de dados!");
+  })
+  .catch((msgErro) => {
+    console.log("Erro ao conectar:", msgErro);
+  });
 
-//Estou dizendo para o Express usar o EJS como View Engine
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
-
-//Body Parser
-app.use(bodyParser.urlencoded({extended: true}));
+// Configurações
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//Rotas
-app.get("/", (req, res) => {
-    res.render("index");
+// Rotas
+app.get("/", async (req, res) => {
+  const perguntas = await Pergunta.findAll({ raw: true, order: [["id", "DESC"]] });
+  res.render("index", { perguntas });
 });
 
-app.get("/perguntar",(req, res) => {
-    res.render("perguntar");
+app.get("/perguntar", (req, res) => {
+  res.render("perguntar");
 });
 
 app.post("/salvarpergunta", (req, res) => {
-    var titulo = req.body.titulo;
-    var descricao = req.body.descricao;
-    res.send("Formulário recebido!" + titulo + " " + " descricao " + descricao);
+  const { titulo, descricao } = req.body;
+
+  Pergunta.create({ titulo, descricao }).then(() => {
+    res.redirect("/");
+  });
 });
 
-app.listen(3306, () => {console.log("App rodando!");});
-
+// Porta
+app.listen(3000, () => {
+  console.log("App rodando na porta 3000!");
+});

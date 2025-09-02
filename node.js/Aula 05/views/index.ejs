@@ -1,9 +1,23 @@
-<%- include ('./partials/header.ejs') %>
+<%- include('partials/header') %>
 <body>
-    <%- include ('./partials/navbar.ejs') %>
+    <%- include('partials/navbar') %>
+
     <div class="container">
         <h1>Testando container</h1>
-    </div>
 
+        <!-- Lista de perguntas (caso venham do backend) -->
+        <% if (typeof perguntas !== "undefined" && perguntas.length > 0) { %>
+            <ul>
+                <% perguntas.forEach(pergunta => { %>
+                    <li>
+                        <strong><%= pergunta.titulo %></strong><br>
+                        <%= pergunta.descricao %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>Nenhuma pergunta cadastrada ainda.</p>
+        <% } %>
+    </div>
 </body>
-<%- include ('./partials/footer.ejs') %>
+<%- include('partials/footer') %>

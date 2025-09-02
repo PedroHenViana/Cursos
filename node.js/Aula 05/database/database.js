@@ -1,8 +1,9 @@
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
 
-const connection = new Sequelize('guiaperguntas', 'root', '3245',{
+const connection = new Sequelize('guiaPerguntas', 'root', '3245', {
     host: 'localhost',
-    dialect: 'mysql'
+    dialect: 'mysql',
+    port: 3306
 });
 
 module.exports = connection;

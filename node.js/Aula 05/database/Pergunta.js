@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import connection from "./database";
+import connection from "./database.js";   // ✅ corrigido com extensão
 
-const Pergunta = connection.define('pergunta', {
+const Pergunta = connection.define("perguntas", {
   titulo: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -12,8 +12,9 @@ const Pergunta = connection.define('pergunta', {
   },
 });
 
-Pergunta.sync({force: false}).then(() => {
-    console.log("Tabela 'perguntas' sincronizada")
-});
+Pergunta.sync({ force: false }) // cria a tabela se não existir
+  .then(() => {
+    console.log("Tabela 'perguntas' sincronizada!");
+  });
 
 export default Pergunta;

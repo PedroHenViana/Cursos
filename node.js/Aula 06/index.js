@@ -1,0 +1,36 @@
+import express from "express";
+const app =  express();
+import bodyParser from "body-parser";
+import connection from "./database/database.js";
+import categoriesController from "./categories/CategoriesController.js"
+import articlesController from "./articles/ArticlesController.js";
+
+//View engine
+app.set('view engine', 'ejs');
+
+//Static
+app.use(express.static('public'));
+
+//Body parser
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+//Database
+connection
+    .authenticate()
+    .then(() => {
+        console.log("Conexão feita com sucesso!");
+    }).catch((error) => {
+        console.log(error);
+    });
+
+app.use("/", categoriesController);
+app.use("/", articlesController);
+
+app.get("/", (req, res) => {
+    res.render("index");
+});
+
+app.listen(8080, () => {
+    console.log("O servidor está rodando!");
+});

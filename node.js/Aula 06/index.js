@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import connection from "./database/database.js";
 import categoriesController from "./categories/CategoriesController.js"
 import articlesController from "./articles/ArticlesController.js";
+import Article from "./articles/Article.js";
+import Category from "./categories/Category.js";
 
 //View engine
 app.set('view engine', 'ejs');

@@ -3,8 +3,8 @@
 
 <div class="container">
     <hr>
-    <h2>Categorias</h2>
-    <a class="btn btn-success" href="/admin/categories/new">Criar um nova categoria</a>
+    <h2>Artigos</h2>
+    <a class="btn btn-success" href="/admin/articles/new">Criar um nova categoria</a>
     <hr>
     <table class="table table-bordered">
         <thead>
@@ -12,23 +12,19 @@
                 <th>ID</th>
                 <th>Título</th>
                 <th>Slug</th>
+                <th>Categoria</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            <% categories.forEach(category => { %>
+            <% articles.forEach(article => { %>
                 <tr>
-                <th><%= category.id %></th>
-                <th><%= category.title %></th>
-                <th><%= category.slug %></th>
-                <th>
-                    <a href="/admin/categories/edit/<%= category.id %>" class="btn btn-warning">Editar</a>                   
-                    <form method="POST" action="/categories/delete" style="display: inline;" onsubmit="confirmarDelecao(event, this)">
-                        <input type="hidden" name="id" value="<%= category.id %>">
-                        <button class="btn btn-danger">Deletar</button>
-                    </form>
-                </th>
-            </tr>
+                    <td><%= article.id %></td>
+                    <td><%= article.title %></td>
+                    <td><%= article.slug %></td>
+                    <td><%= article.category.title %></td>
+                    <td>Ações</td>     
+                </tr>                          
             <% }) %>
         </tbody>
     </table>

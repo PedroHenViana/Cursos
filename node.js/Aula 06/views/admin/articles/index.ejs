@@ -1,10 +1,10 @@
-<%- include('../../partials/header.ejs', { title: "Página de categorias" }) %>
+<%- include('../../partials/header.ejs', { title: "Artigos" }) %>
 <%- include('../../partials/navbar.ejs') %>
 
 <div class="container">
     <hr>
     <h2>Artigos</h2>
-    <a class="btn btn-success" href="/admin/articles/new">Criar um nova categoria</a>
+    <a class="btn btn-success mb-3" href="/admin/articles/new">Criar novo artigo</a>
     <hr>
     <table class="table table-bordered">
         <thead>
@@ -18,13 +18,23 @@
         </thead>
         <tbody>
             <% articles.forEach(article => { %>
-                <tr>
-                    <td><%= article.id %></td>
-                    <td><%= article.title %></td>
-                    <td><%= article.slug %></td>
-                    <td><%= article.category.title %></td>
-                    <td>Ações</td>     
-                </tr>                          
+            <tr>
+                <td><%= article.id %></td>
+                <td><%= article.title %></td>
+                <td><%= article.slug %></td>
+                <td>
+                    <%= article.Category && article.Category.title 
+                        ? article.Category.title 
+                        : "Sem categoria" %>
+                </td>
+                <td>
+                    <a class="btn btn-warning btn-sm" href="/admin/articles/edit/<%= article.id %>">Editar</a>
+                    <form action="/articles/delete" method="POST" style="display:inline;" onsubmit="return confirmarDelecao(event, this)">
+                        <input type="hidden" name="id" value="<%= article.id %>">
+                        <button class="btn btn-danger btn-sm" type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
             <% }) %>
         </tbody>
     </table>
@@ -33,13 +43,13 @@
 <%- include('../../partials/footer.ejs') %>
 
 <script>
-    function confirmarDelecao(event, form){
+    function confirmarDelecao(event, form) {
         event.preventDefault();
-        var decision = confirm("Você quer deletar essa categoria?");
-        if(decision){
+        var decision = confirm("Você quer deletar este artigo?");
+        if (decision) {
             form.submit();
-        }else{
-            console.log("Não quero deletar, foi um acidente!");
+        } else {
+            console.log("Exclusão cancelada.");
         }
     }
 </script>
